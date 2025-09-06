@@ -1,0 +1,7 @@
+#=== VS Code ===
+#Ignore workspace-specific editor settings
+.vscode/
+
+#=== Maven Build Artifacts ===
+#Ignore the folder with compiled code and package application
+target/

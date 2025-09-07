@@ -1,9 +1,9 @@
-import com.studies.Transaction;
+package com.studies;
 
 public class Expense extends Transaction {
 
     private String category;
-
+    
     public Expense(String description, double valor, String date) {
         super(description, valor, date);
     }
@@ -17,6 +17,9 @@ public class Expense extends Transaction {
     }
 
     public void setCategory(String category) {
+        if(!Category.allCategories.contains(category)){
+            Category.addCategories(category); 
+        }
         this.category = category;
     }
 

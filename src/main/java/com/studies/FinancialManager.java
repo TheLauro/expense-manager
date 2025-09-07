@@ -124,20 +124,21 @@ public class FinancialManager {
         return valorMonthIncomes - valorMonthExpenses;
     }
 
-    public static Map<String, Double> getExpensesByCategory(){
+    public static Map<String, Double> getExpensesByCategory() {
         Map<String, Double> expensesByCategory = new HashMap<>();
-        
-        for(String category : Category.allCategories){
-            for(Transaction transaction : allTransactions){
-                if(transaction.getClass()==Expense.class){
-                    Expense expense = (Expense) transaction;
-                    if(expense.getCategory()==category){
-                        expensesByCategory.merge(category,expense.getValor(),Double::sum);
-                    }
-                }
+
+        for (Transaction transaction : allTransactions) {
+            
+            if (transaction.getClass() == Expense.class) {
+                Expense expense = (Expense) transaction;
+
+                String category = expense.getCategory();
+                double valor = expense.getValor();
+
+                expensesByCategory.merge(category,valor, Double::sum);
             }
         }
 
         return expensesByCategory;
     }
-}   
+}

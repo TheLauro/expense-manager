@@ -2,6 +2,12 @@ package com.studies;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
+/**
+ *
+ * @author lauro.ouverney
+ */
 
 public class Transaction {
 
@@ -43,8 +49,13 @@ public class Transaction {
     }
 
     public void setDate(String date) {
-        LocalDate formattedDate = LocalDate.parse(date, BRAZILIAN_FORMAT);
-        this.date = formattedDate;
+        try {
+            LocalDate formattedDate = LocalDate.parse(date, BRAZILIAN_FORMAT);
+            this.date = formattedDate;
+
+        } catch (DateTimeParseException e){
+            throw new IllegalArgumentException("Formato de data inválido. Use 'dd/MM/yyyy'.", e);
+        }
     }
 
     public String getDescription() {

@@ -17,7 +17,7 @@ public class Expense extends Transaction {
     }
 
     public void setCategory(String category) {
-        if(!Category.allCategories.contains(category)){
+        if(!Category.exists(category)){
             Category.addCategories(category); 
         }
         this.category = category;

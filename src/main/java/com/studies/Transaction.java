@@ -14,7 +14,7 @@ public class Transaction {
     protected String description;
     protected double valor;
     protected LocalDate date;
-    protected static final DateTimeFormatter BRAZILIAN_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    public static final DateTimeFormatter BRAZILIAN_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public Transaction(String description, double valor, String date) {
         setDescription(description);

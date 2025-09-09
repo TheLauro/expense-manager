@@ -1,5 +1,6 @@
-package com.studies;
+package com.studies.interaction;
 
+import com.studies.logic.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.time.LocalDate;

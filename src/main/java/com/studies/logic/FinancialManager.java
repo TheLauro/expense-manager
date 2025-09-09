@@ -1,4 +1,4 @@
-package com.studies;
+package com.studies.logic;
 
 import java.util.List;
 import java.util.ArrayList;

@@ -48,8 +48,8 @@ public class Transaction {
             LocalDate formattedDate = LocalDate.parse(date, BRAZILIAN_FORMAT);
             this.date = formattedDate;
 
-        } catch (DateTimeParseException e){
-            throw new IllegalArgumentException("Formato de data inválido. Use 'dd/MM/yyyy'.", e);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Formato de data inválido!", e);
         }
     }
 

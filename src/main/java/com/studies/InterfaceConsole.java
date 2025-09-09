@@ -1,7 +1,7 @@
 package com.studies;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
-
 
 /**
  * Hello world!
@@ -9,10 +9,10 @@ import java.util.Scanner;
  */
 public class InterfaceConsole {
 
-    private static Scanner sc = new Scanner(System.in);
+    private static Scanner sc;
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        sc = new Scanner(System.in);
 
         handleCreateIncome();
 
@@ -54,6 +54,7 @@ public class InterfaceConsole {
         System.out.println(
                 "Digite a descricao da despesa: (Se não quiser adicionar uma descrição, apenas de Enter e siga para o proximo item)");
         description = sc.nextLine();
+
         while (true) {
 
             try {
@@ -61,8 +62,9 @@ public class InterfaceConsole {
                 valor = sc.nextDouble();
                 break;
 
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+            } catch (InputMismatchException e) {
+                System.out.println("Digite um numero valido!");
+                sc.nextLine();
             }
         }
 
@@ -73,6 +75,9 @@ public class InterfaceConsole {
                         "\n" + "2-NAO");
         int option = sc.nextInt();
         sc.nextLine();
+
+        choice:
+        while(true){
 
         switch (option) {
 
@@ -91,14 +96,18 @@ public class InterfaceConsole {
                         System.out.println(e.getMessage());
                     }
                 }
-                break;
+                break choice;
 
             case 2:
                 newExpense = FinancialManager.createExpense(description, valor);
-                break;
+                break choice;
 
             default:
+            System.out.println("Digite uma opcao valida!");
+            option = sc.nextInt();
+            sc.nextLine();
         }
+    }
 
         System.out.println("Defina qual a categoria da despesa:");
         for (int i = 0; i < Category.getCategories().size(); i++) {
@@ -108,6 +117,9 @@ public class InterfaceConsole {
                 "0-Caso sua categoria nao esteja na lista, para criar uma nova categoria para sua despesa");
         int optionCategory = sc.nextInt();
         sc.nextLine();
+
+        choiceCategory:
+        while(true){
 
         switch (optionCategory) {
 
@@ -125,12 +137,22 @@ public class InterfaceConsole {
                     System.out.println(
                             "A despesa sera criada sem uma categoria, caso realmente queria adicionar uma nova categoria para essa despesa, utiliza a opção no menu");
                 }
-                break;
+                break choiceCategory;
 
             default:
-                newExpense.setCategory(Category.getCategories().get(optionCategory - 1));
+
+                try{
+
+                    newExpense.setCategory(Category.getCategories().get(optionCategory - 1));
+                    break choiceCategory;
+
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("Digite uma opcao valida!");
+                    optionCategory = sc.nextInt();
+                }
 
         }
+    }
         System.out.println("\n" + "Despesa criada com sucesso!");
     }
 
@@ -141,15 +163,18 @@ public class InterfaceConsole {
         System.out.println(
                 "Digite a descricao da entrada: (Se não quiser adicionar uma descrição, apenas de Enter e siga para o proximo item)");
         description = sc.nextLine();
+
         while (true) {
 
             try {
                 System.out.println("Digite o valor da entrada:");
                 valor = sc.nextDouble();
+                
                 break;
 
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+            } catch (InputMismatchException e) {
+                System.out.println("Digite um numero valido!");
+                sc.nextLine();
             }
         }
 
@@ -160,6 +185,9 @@ public class InterfaceConsole {
                         "\n" + "2-NAO");
         int option = sc.nextInt();
         sc.nextLine();
+
+        choice:
+        while(true){
 
         switch (option) {
 
@@ -178,14 +206,18 @@ public class InterfaceConsole {
                         System.out.println(e.getMessage());
                     }
                 }
-                break;
+                break choice;
 
             case 2:
                 FinancialManager.createIncome(description, valor);
-                break;
+                break choice;
 
             default:
+            System.out.println("Digite uma opcao valida!");
+            option = sc.nextInt();
+            sc.nextLine();
         }
+    }
 
         System.out.println("\n" + "Entrada criada com sucesso!");
     }
@@ -311,124 +343,124 @@ public class InterfaceConsole {
         int option = sc.nextInt();
 
         int option2 = 0;
-        
-        Transaction transaction = FinancialManager.getAllTransactions().get(option-1);
 
-        if(transaction.getClass()==Expense.class){
+        Transaction transaction = FinancialManager.getAllTransactions().get(option - 1);
 
-        Expense expense = (Expense) transaction;
-        
-        while(option2!=5){
+        if (transaction.getClass() == Expense.class) {
 
-        System.out.println("O que você quer editar?");
-        System.out.println("1-Descricao"+ 
-        "\n" + "2-Valor" + 
-        "\n" + "3-Data"+
-        "\n"+"4-Categoria"+
-        "\n"+"5-Sair");
+            Expense expense = (Expense) transaction;
 
-        option2 = sc.nextInt();
-        sc.nextLine();
+            while (option2 != 5) {
 
-        String description, date, category;
-        double valor;
+                System.out.println("O que você quer editar?");
+                System.out.println("1-Descricao" +
+                        "\n" + "2-Valor" +
+                        "\n" + "3-Data" +
+                        "\n" + "4-Categoria" +
+                        "\n" + "5-Sair");
 
-        try{
+                option2 = sc.nextInt();
+                sc.nextLine();
 
-        switch (option2){
+                String description, date, category;
+                double valor;
 
-            case 1:
-            System.out.println("Digite a nova descricao:");
-            description = sc.nextLine();
-            FinancialManager.updateTransaction(expense,description);
-            break;
+                try {
 
-            case 2:
-            System.out.println("Digite o novo valor:");
-            valor = sc.nextDouble();
-            sc.nextLine();
-            FinancialManager.updateTransaction(expense,valor);
-            break;
+                    switch (option2) {
 
-            case 3:
-            System.out.println("Digite a nova data:");
-            date = sc.nextLine();
-            FinancialManager.updateTransaction(expense,date);
-            break;
+                        case 1:
+                            System.out.println("Digite a nova descricao:");
+                            description = sc.nextLine();
+                            FinancialManager.updateTransaction(expense, description);
+                            break;
 
-            case 4:
-            System.out.println("Digite a nova categoria:");
-            category = sc.nextLine();
-            FinancialManager.updateCategory(expense,category);
-            break;
+                        case 2:
+                            System.out.println("Digite o novo valor:");
+                            valor = sc.nextDouble();
+                            sc.nextLine();
+                            FinancialManager.updateTransaction(expense, valor);
+                            break;
 
-            default:
-            System.out.println("Opcao invalida!");
-            return;
+                        case 3:
+                            System.out.println("Digite a nova data:");
+                            date = sc.nextLine();
+                            FinancialManager.updateTransaction(expense, date);
+                            break;
 
+                        case 4:
+                            System.out.println("Digite a nova categoria:");
+                            category = sc.nextLine();
+                            FinancialManager.updateCategory(expense, category);
+                            break;
+
+                        default:
+                            System.out.println("Opcao invalida!");
+                            return;
+
+                    }
+
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                    return;
+                }
+            }
+            System.out.println("Transacao editada com sucesso!");
+
+        } else {
+            while (option2 != 4) {
+
+                System.out.println("O que você quer editar?");
+                System.out.println("1-Descricao" +
+                        "\n" + "2-Valor" +
+                        "\n" + "3-Data" +
+                        "\n" + "4-Sair");
+
+                option2 = sc.nextInt();
+                sc.nextLine();
+
+                String description, date;
+                double valor;
+
+                try {
+
+                    switch (option2) {
+
+                        case 1:
+                            System.out.println("Digite a nova descricao:");
+                            description = sc.nextLine();
+                            FinancialManager.updateTransaction(transaction, description);
+                            break;
+
+                        case 2:
+                            System.out.println("Digite o novo valor:");
+                            valor = sc.nextDouble();
+                            sc.nextLine();
+                            FinancialManager.updateTransaction(transaction, valor);
+                            break;
+
+                        case 3:
+                            System.out.println("Digite a nova data:");
+                            date = sc.nextLine();
+                            FinancialManager.updateTransaction(transaction, date);
+                            break;
+
+                        default:
+                            System.out.println("Opcao invalida!");
+                            return;
+
+                    }
+
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                    return;
+                }
+            }
+            System.out.println("Transacao editada com sucesso!");
         }
-
-    } catch(IllegalArgumentException e){
-        System.out.println(e.getMessage());
-        return;
     }
-}
-        System.out.println("Transacao editada com sucesso!");
 
-    } else {
-        while(option2!=4){
-
-        System.out.println("O que você quer editar?");
-        System.out.println("1-Descricao"+ 
-        "\n" + "2-Valor" + 
-        "\n" + "3-Data"+
-        "\n"+"4-Sair");
-
-        option2 = sc.nextInt();
-        sc.nextLine();
-
-        String description, date;
-        double valor;
-
-        try{
-
-        switch (option2){
-
-            case 1:
-            System.out.println("Digite a nova descricao:");
-            description = sc.nextLine();
-            FinancialManager.updateTransaction(transaction,description);
-            break;
-
-            case 2:
-            System.out.println("Digite o novo valor:");
-            valor = sc.nextDouble();
-            sc.nextLine();
-            FinancialManager.updateTransaction(transaction,valor);
-            break;
-
-            case 3:
-            System.out.println("Digite a nova data:");
-            date = sc.nextLine();
-            FinancialManager.updateTransaction(transaction,date);
-            break;
-
-            default:
-            System.out.println("Opcao invalida!");
-            return;
-
-        }
-
-    } catch(IllegalArgumentException e){
-        System.out.println(e.getMessage());
-        return;
-    }
-}
-        System.out.println("Transacao editada com sucesso!");
-    }
-}
-
-    public static void handleAddCategory(){
+    public static void handleAddCategory() {
         System.out.println("Digite a categoria que deseja adicionar:");
         String category = sc.nextLine();
         try {

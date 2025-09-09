@@ -12,10 +12,6 @@ public class Expense extends Transaction {
         super(description, valor);
     }
 
-    public Expense(double valor) {
-        super(valor);
-    }
-
     public void setCategory(String category) {
         if(!Category.exists(category)){
             Category.addCategories(category); 

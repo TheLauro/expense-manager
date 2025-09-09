@@ -26,20 +26,15 @@ public class Transaction {
         this(description, valor, getTodayDate());
     }
 
-    public Transaction(double valor) {
-        this("", valor);
-    }
-
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public boolean setValor(double valor) {
+    public void setValor(double valor) {
         if (valor > 0) {
             this.valor = valor;
-            return true;
         } else {
-            return false;
+            throw new IllegalArgumentException("Valor Inválido! O valor não pode ser nulo ou menor que 0!");
         }
     }
 

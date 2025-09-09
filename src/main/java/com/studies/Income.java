@@ -10,7 +10,4 @@ public class Income extends Transaction{
         super(description, valor);
     }
 
-    public Income(double valor) {
-        super(valor);
-    }
 }

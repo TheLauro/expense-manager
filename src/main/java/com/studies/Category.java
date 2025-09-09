@@ -5,10 +5,11 @@ import java.util.Set;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Category {
 
-    public static final Set<String> allCategories = new TreeSet<>();
+    private static final Set<String> allCategories = new TreeSet<>(Arrays.asList("Alimentacao","Transporte","Entretenimento","Aluguel"));
 
     private Category() {
 
@@ -40,4 +41,6 @@ public class Category {
     public static List<String> getCategories() {
         return Collections.unmodifiableList(new ArrayList<>(allCategories));
     }
+
+    
 }

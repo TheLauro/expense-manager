@@ -7,6 +7,11 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ *
+ * @author lauro.ouverney
+ */
+
 public class Category {
 
     private static final Set<String> allCategories = new TreeSet<>(Arrays.asList("Alimentacao","Transporte","Entretenimento","Aluguel"));

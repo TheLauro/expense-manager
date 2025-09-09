@@ -2,48 +2,99 @@ package com.studies;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.time.LocalDate;
 
 /**
- * Hello world!
  *
+ * @author lauro.ouverney
  */
+
 public class InterfaceConsole {
 
     private static Scanner sc;
 
     public static void main(String[] args) {
+
+        initializeTransactionsExamples();
+
         sc = new Scanner(System.in);
 
-        handleCreateIncome();
+        int option = 0;
 
-        handleAddCategory();
+        while (option != 9) {
+            System.out.println("--------- Menu Principal ---------");
 
-        endOfMethod();
+            System.out.println("Digite a funcao que deseja realizar:" +
+                    "\n" + "1-Lançar despesa" +
+                    "\n" + "2-Lançar entrada" +
+                    "\n" + "3-Editar transacao" +
+                    "\n" + "4-Excluir transacao" +
+                    "\n" + "5-Exibir todas as transacoes" +
+                    "\n" + "6-Exibir transacoes referentes ao mes atual" +
+                    "\n" + "7-Exibir despesas por Categoria" +
+                    "\n" + "8-Adicionar nova categoria" +
+                    "\n" + "9-Encerrar Programa");
 
-        handleCreateExpense();
+            try {
+                option = sc.nextInt();
+                
+            } catch (InputMismatchException e) {
+                
+            }
+            sc.nextLine();
+            
+            switch (option) {
 
-        handleCreateExpense();
+                case 1:
+                    handleCreateExpense();
+                    break;
 
-        handleGetExpensesByCategory();
+                case 2:
+                    handleCreateIncome();
+                    break;
 
-        endOfMethod();
+                case 3:
+                    handleUpdateTransaction();
+                    break;
 
-        handleShowTransactions();
+                case 4:
+                    handleDeleteTransaction();
+                    break;
 
-        endOfMethod();
+                case 5:
+                    handleShowTransactions();
+                    handleGetGeralBalance();
+                    break;
 
-        handleGetGeralBalance();
+                case 6:
+                    handleShowMonthTransactions();
+                    handleGetMonthBalance();
+                    break;
 
-        endOfMethod();
+                case 7:
+                    handleGetExpensesByCategory();
+                    break;
 
-        handleUpdateTransaction();
+                case 8:
+                    handleAddCategory();
+                    break;
 
-        endOfMethod();
+                case 9:
+                    break;
 
-        handleShowTransactions();
+                default:
+                    System.out.println("\n" + "Opcao Invalida! Tente novamente.");
+            }
 
-        handleGetGeralBalance();
-
+            if (option != 9) {
+                System.out.println("\n" + "Após a visualizacao, digite qualquer tecla para voltar ao menu principal");
+                sc.nextLine();
+            } else {
+                System.out.println("\n" + "Programa Encerrado!");
+            }
+            endOfMethod();
+        }
+        sc.close();
     }
 
     public static void handleCreateExpense() {
@@ -52,64 +103,63 @@ public class InterfaceConsole {
         Expense newExpense = null;
 
         System.out.println(
-                "Digite a descricao da despesa: (Se não quiser adicionar uma descrição, apenas de Enter e siga para o proximo item)");
+                "\n" + "Digite a descricao da despesa: (Se não quiser adicionar uma descrição, apenas de Enter e siga para o proximo item)");
         description = sc.nextLine();
 
         while (true) {
 
             try {
-                System.out.println("Digite o valor da despesa:");
+                System.out.println("\n" + "Digite o valor da despesa:");
                 valor = sc.nextDouble();
                 break;
 
             } catch (InputMismatchException e) {
-                System.out.println("Digite um numero valido!");
+                System.out.println("\n" + "Digite um numero valido!");
                 sc.nextLine();
             }
         }
 
         System.out.println(
-                "Deseja adicionar uma data especifica? (Se nao adicionar, a despesa sera atribuida a data de hoje)"
+                "\n" + "Deseja adicionar uma data especifica? (Se nao adicionar, a despesa sera atribuida a data de hoje)"
                         +
                         "\n" + "1-SIM" +
                         "\n" + "2-NAO");
         int option = sc.nextInt();
         sc.nextLine();
 
-        choice:
-        while(true){
+        choice: while (true) {
 
-        switch (option) {
+            switch (option) {
 
-            case 1:
+                case 1:
 
-                while (true) {
-                    System.out.println("Digite a data seguindo o padrao 'dd/MM/yyyy':");
-                    date = sc.next();
-                    sc.nextLine();
+                    while (true) {
+                        System.out.println("\n" + "Digite a data seguindo o padrao 'dd/MM/yyyy':");
+                        date = sc.next();
+                        sc.nextLine();
 
-                    try {
-                        newExpense = FinancialManager.createExpense(description, valor, date);
-                        break;
+                        try {
+                            newExpense = FinancialManager.createExpense(description, valor, date);
+                            break;
 
-                    } catch (IllegalArgumentException e) {
-                        System.out.println(e.getMessage());
+                        } catch (IllegalArgumentException e) {
+                            System.out.println(e.getMessage());
+                        }
                     }
-                }
-                break choice;
+                    break choice;
 
-            case 2:
-                newExpense = FinancialManager.createExpense(description, valor);
-                break choice;
+                case 2:
+                    newExpense = FinancialManager.createExpense(description, valor);
+                    break choice;
 
-            default:
-            System.out.println("Digite uma opcao valida!");
-            option = sc.nextInt();
-            sc.nextLine();
+                default:
+                    System.out.println("\n" + "Digite uma opcao valida!");
+                    option = sc.nextInt();
+                    sc.nextLine();
+            }
         }
-    }
 
-        System.out.println("Defina qual a categoria da despesa:");
+        System.out.println("\n" + "Defina qual a categoria da despesa:");
         for (int i = 0; i < Category.getCategories().size(); i++) {
             System.out.println(i + 1 + "-" + Category.getCategories().get(i));
         }
@@ -118,41 +168,40 @@ public class InterfaceConsole {
         int optionCategory = sc.nextInt();
         sc.nextLine();
 
-        choiceCategory:
-        while(true){
+        choiceCategory: while (true) {
 
-        switch (optionCategory) {
+            switch (optionCategory) {
 
-            case 0:
-                System.out.println(
-                        "Digite o nome da nova categoria: (Ela tambem ficara disponivel para uso em futuras despesas)");
-                String category = sc.nextLine();
-                try {
-                    Category.addCategories(category);
-                    newExpense.setCategory(category);
-                    System.out.println("\n" + "Categoria adicionada com sucesso!" + "\n");
-
-                } catch (IllegalArgumentException e) {
-                    System.out.println(e.getMessage());
+                case 0:
                     System.out.println(
-                            "A despesa sera criada sem uma categoria, caso realmente queria adicionar uma nova categoria para essa despesa, utiliza a opção no menu");
-                }
-                break choiceCategory;
+                            "\n" + "Digite o nome da nova categoria: (Ela tambem ficara disponivel para uso em futuras despesas)");
+                    String category = sc.nextLine();
+                    try {
+                        Category.addCategories(category);
+                        newExpense.setCategory(category);
+                        System.out.println("\n" + "Categoria adicionada com sucesso!" + "\n");
 
-            default:
-
-                try{
-
-                    newExpense.setCategory(Category.getCategories().get(optionCategory - 1));
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                        System.out.println(
+                                "\n" + "A despesa sera criada sem uma categoria, caso realmente queria adicionar uma nova categoria para essa despesa, utiliza a opção no menu");
+                    }
                     break choiceCategory;
 
-                } catch (IndexOutOfBoundsException e) {
-                    System.out.println("Digite uma opcao valida!");
-                    optionCategory = sc.nextInt();
-                }
+                default:
 
+                    try {
+
+                        newExpense.setCategory(Category.getCategories().get(optionCategory - 1));
+                        break choiceCategory;
+
+                    } catch (IndexOutOfBoundsException e) {
+                        System.out.println("\n" + "Digite uma opcao valida!");
+                        optionCategory = sc.nextInt();
+                    }
+
+            }
         }
-    }
         System.out.println("\n" + "Despesa criada com sucesso!");
     }
 
@@ -161,63 +210,62 @@ public class InterfaceConsole {
         double valor = 0;
 
         System.out.println(
-                "Digite a descricao da entrada: (Se não quiser adicionar uma descrição, apenas de Enter e siga para o proximo item)");
+                "\n" + "Digite a descricao da entrada: (Se não quiser adicionar uma descrição, apenas de Enter e siga para o proximo item)");
         description = sc.nextLine();
 
         while (true) {
 
             try {
-                System.out.println("Digite o valor da entrada:");
+                System.out.println("\n" + "Digite o valor da entrada:");
                 valor = sc.nextDouble();
-                
+
                 break;
 
             } catch (InputMismatchException e) {
-                System.out.println("Digite um numero valido!");
+                System.out.println("\n" + "Digite um numero valido!");
                 sc.nextLine();
             }
         }
 
         System.out.println(
-                "Deseja adicionar uma data especifica? (Se nao adicionar, a entrada sera atribuida a data de hoje)"
+                "\n" + "Deseja adicionar uma data especifica? (Se nao adicionar, a entrada sera atribuida a data de hoje)"
                         +
                         "\n" + "1-SIM" +
                         "\n" + "2-NAO");
         int option = sc.nextInt();
         sc.nextLine();
 
-        choice:
-        while(true){
+        choice: while (true) {
 
-        switch (option) {
+            switch (option) {
 
-            case 1:
+                case 1:
 
-                while (true) {
-                    System.out.println("Digite a data seguindo o padrao 'dd/MM/yyyy':");
-                    date = sc.next();
-                    sc.nextLine();
+                    while (true) {
+                        System.out.println("\n" + "Digite a data seguindo o padrao 'dd/MM/yyyy':");
+                        date = sc.next();
+                        sc.nextLine();
 
-                    try {
-                        FinancialManager.createIncome(description, valor, date);
-                        break;
+                        try {
+                            FinancialManager.createIncome(description, valor, date);
+                            break;
 
-                    } catch (IllegalArgumentException e) {
-                        System.out.println(e.getMessage());
+                        } catch (IllegalArgumentException e) {
+                            System.out.println(e.getMessage());
+                        }
                     }
-                }
-                break choice;
+                    break choice;
 
-            case 2:
-                FinancialManager.createIncome(description, valor);
-                break choice;
+                case 2:
+                    FinancialManager.createIncome(description, valor);
+                    break choice;
 
-            default:
-            System.out.println("Digite uma opcao valida!");
-            option = sc.nextInt();
-            sc.nextLine();
+                default:
+                    System.out.println("\n" + "Digite uma opcao valida!");
+                    option = sc.nextInt();
+                    sc.nextLine();
+            }
         }
-    }
 
         System.out.println("\n" + "Entrada criada com sucesso!");
     }
@@ -229,7 +277,7 @@ public class InterfaceConsole {
 
             if (transaction.getClass() == Expense.class) {
                 Expense expense = (Expense) transaction;
-                System.out.println("Tipo : Despesa" +
+                System.out.println("Tipo: Despesa" +
                         "\n" + "Categoria: " + expense.getCategory());
 
             } else if (transaction.getClass() == Income.class) {
@@ -244,7 +292,7 @@ public class InterfaceConsole {
     }
 
     public static void handleGetGeralBalance() {
-        System.out.println("Saldo Geral: " + String.format("R$ %.2f", FinancialManager.getGeralBalance()));
+        System.out.println("\n" + "Saldo Geral: " + String.format("R$ %.2f", FinancialManager.getGeralBalance()));
     }
 
     public static void endOfMethod() {
@@ -273,11 +321,11 @@ public class InterfaceConsole {
     }
 
     public static void handleGetMonthBalance() {
-        System.out.println("Saldo mensal: " + String.format("R$ %.2f", FinancialManager.getMonthBalance()));
+        System.out.println("\n" + "Saldo mensal: " + String.format("R$ %.2f", FinancialManager.getMonthBalance()));
     }
 
     public static void handleGetExpensesByCategory() {
-        System.out.println("Valor gasto em cada categoria:");
+        System.out.println("\n" + "Valor gasto em cada categoria: " + "\n");
         for (String category : Category.getCategories()) {
             System.out.println(
                     category + ": " + String.format("R$ %.2f", FinancialManager.getExpensesByCategory().get(category)));
@@ -285,7 +333,11 @@ public class InterfaceConsole {
     }
 
     public static void handleDeleteTransaction() {
-        System.out.println("Digite o número equivalente a transacao que deseja excluir:");
+        if(FinancialManager.getAllTransactions().size()==0){
+            System.out.println("\n"+"Nenhuma transacao adicionada!");
+            return;
+        }
+        System.out.println("\n" + "Digite o número equivalente a transacao que deseja excluir:");
         for (int i = 0; i < FinancialManager.getAllTransactions().size(); i++) {
 
             Transaction transaction = FinancialManager.getAllTransactions().get(i);
@@ -315,11 +367,15 @@ public class InterfaceConsole {
             return;
         }
 
-        System.out.println("Transacao excluida com sucesso!");
+        System.out.println("\n" + "Transacao excluida com sucesso!");
     }
 
     public static void handleUpdateTransaction() {
-        System.out.println("Digite o número equivalente a transacao que deseja editar:");
+        if(FinancialManager.getAllTransactions().size()==0){
+            System.out.println("\n"+"Nenhuma transacao adicionada!");
+            return;
+        }
+        System.out.println("\n" + "Digite o número equivalente a transacao que deseja editar:");
         for (int i = 0; i < FinancialManager.getAllTransactions().size(); i++) {
 
             Transaction transaction = FinancialManager.getAllTransactions().get(i);
@@ -352,8 +408,8 @@ public class InterfaceConsole {
 
             while (option2 != 5) {
 
-                System.out.println("O que você quer editar?");
-                System.out.println("1-Descricao" +
+                System.out.println("\n" + "O que você quer editar?");
+                System.out.println("\n" + "1-Descricao" +
                         "\n" + "2-Valor" +
                         "\n" + "3-Data" +
                         "\n" + "4-Categoria" +
@@ -365,53 +421,59 @@ public class InterfaceConsole {
                 String description, date, category;
                 double valor;
 
-                try {
-
                     switch (option2) {
 
                         case 1:
-                            System.out.println("Digite a nova descricao:");
+                            System.out.println("\n" + "Digite a nova descricao:");
                             description = sc.nextLine();
                             FinancialManager.updateTransaction(expense, description);
                             break;
 
                         case 2:
-                            System.out.println("Digite o novo valor:");
+                            System.out.println("\n" + "Digite o novo valor:");
                             valor = sc.nextDouble();
                             sc.nextLine();
                             FinancialManager.updateTransaction(expense, valor);
                             break;
 
                         case 3:
-                            System.out.println("Digite a nova data:");
+                        try{
+                            System.out.println("\n" + "Digite a nova data:");
                             date = sc.nextLine();
-                            FinancialManager.updateTransaction(expense, date);
+                            LocalDate dateDate = LocalDate.parse(date,Transaction.BRAZILIAN_FORMAT);
+                            FinancialManager.updateTransaction(expense, dateDate);
+                        } catch(IllegalArgumentException e){
+                            System.out.println(e.getMessage());
+                        }
                             break;
 
                         case 4:
-                            System.out.println("Digite a nova categoria:");
+                        try{
+                            System.out.println("\n" + "Digite a nova categoria:");
                             category = sc.nextLine();
                             FinancialManager.updateCategory(expense, category);
                             break;
+                        } catch(IllegalArgumentException e){
+                            System.out.println(e.getMessage());
+                        }
+
+                        case 5:
+                        break;
 
                         default:
-                            System.out.println("Opcao invalida!");
+                            System.out.println("\n" + "Opcao invalida!");
                             return;
 
                     }
 
-                } catch (IllegalArgumentException e) {
-                    System.out.println(e.getMessage());
-                    return;
-                }
             }
-            System.out.println("Transacao editada com sucesso!");
+            System.out.println("\n" + "Transacao editada com sucesso!");
 
         } else {
             while (option2 != 4) {
 
-                System.out.println("O que você quer editar?");
-                System.out.println("1-Descricao" +
+                System.out.println("\n" + "O que você quer editar?");
+                System.out.println("\n" + "1-Descricao" +
                         "\n" + "2-Valor" +
                         "\n" + "3-Data" +
                         "\n" + "4-Sair");
@@ -422,51 +484,70 @@ public class InterfaceConsole {
                 String description, date;
                 double valor;
 
-                try {
-
                     switch (option2) {
 
                         case 1:
-                            System.out.println("Digite a nova descricao:");
+                            System.out.println("\n" + "Digite a nova descricao:");
                             description = sc.nextLine();
                             FinancialManager.updateTransaction(transaction, description);
                             break;
 
                         case 2:
-                            System.out.println("Digite o novo valor:");
+                            System.out.println("\n" + "Digite o novo valor:");
                             valor = sc.nextDouble();
                             sc.nextLine();
                             FinancialManager.updateTransaction(transaction, valor);
                             break;
 
                         case 3:
-                            System.out.println("Digite a nova data:");
+                            try{
+                            System.out.println("\n" + "Digite a nova data:");
                             date = sc.nextLine();
-                            FinancialManager.updateTransaction(transaction, date);
+                            LocalDate dateDate = LocalDate.parse(date,Transaction.BRAZILIAN_FORMAT);
+                            FinancialManager.updateTransaction(transaction, dateDate);
+                        } catch(IllegalArgumentException e){
+                            System.out.println(e.getMessage());
+                        }
                             break;
 
+                        case 4:
+                        break;
+
                         default:
-                            System.out.println("Opcao invalida!");
+                            System.out.println("\n" + "Opcao invalida!");
                             return;
 
                     }
-
-                } catch (IllegalArgumentException e) {
-                    System.out.println(e.getMessage());
-                    return;
-                }
             }
-            System.out.println("Transacao editada com sucesso!");
+            System.out.println("\n" + "Transacao editada com sucesso!");
         }
     }
 
     public static void handleAddCategory() {
-        System.out.println("Digite a categoria que deseja adicionar:");
+        System.out.println("\n" + "Digite a categoria que deseja adicionar:");
         String category = sc.nextLine();
         try {
             Category.addCategories(category);
+            System.out.println("\n" + "Categoria adicionado com sucesso!");
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static void initializeTransactionsExamples(){
+        Expense expense1 = FinancialManager.createExpense("Casa", 500);
+        expense1.setCategory("Aluguel");
+
+        FinancialManager.createIncome("Salario", 1500,"01/09/2025");
+
+        Expense expense2 = FinancialManager.createExpense("Conserto do carro", 1000, "01/07/2025");
+        expense2.setCategory("Transporte");
+        
+        FinancialManager.createIncome("Bico de motoboy", 200,"20/08/2025");
+
+        Expense expense3 = FinancialManager.createExpense("Jantar fora", 20,"12/08/2025");
+        expense3.setCategory("Alimentacao");
+
+        FinancialManager.createIncome("Me deram de presente", 300, "30/06/2025");
     }
 }

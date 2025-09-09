@@ -3,11 +3,15 @@ package com.studies;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.time.format.DateTimeParseException;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.Map;
 import java.util.HashMap;
+
+/**
+ *
+ * @author lauro.ouverney
+ */
 
 public class FinancialManager {
 
@@ -57,21 +61,25 @@ public class FinancialManager {
     }
 
     // Begin of Update Methods for Transactions
-
-    // Update description or date
-    public static void updateTransaction(Transaction transaction, String descOrDate) {
-        try {
-            LocalDate date = LocalDate.parse(descOrDate, Transaction.BRAZILIAN_FORMAT);
-            transaction.date = date;
-
-        } catch (DateTimeParseException e) {
-            transaction.description = descOrDate;
-        }
+    
+    //Update description
+    public static void updateTransaction(Transaction transaction, String description){
+        transaction.setDescription(description);
     }
 
     // Update valor
     public static void updateTransaction(Transaction transaction, double valor) {
         transaction.setValor(valor);
+    }
+
+    // Update date
+    public static void updateTransaction(Transaction transaction,LocalDate date) {
+        try{
+            String dateString = date.format(Transaction.BRAZILIAN_FORMAT);
+            transaction.setDate(dateString);;
+        } catch (IllegalArgumentException e){
+            throw e;
+        }
     }
 
     //Update Category

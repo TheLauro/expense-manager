@@ -16,8 +16,6 @@ public class InterfaceConsole {
 
     public static void main(String[] args) {
 
-        initializeTransactionsExamples();
-
         sc = new Scanner(System.in);
 
         int option = 0;

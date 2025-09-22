@@ -15,4 +15,9 @@ public class Income extends Transaction{
         super(description, valor);
     }
 
+    @Override
+    public double getSignedAmount(){
+        return this.valor;
+    }
+
 }

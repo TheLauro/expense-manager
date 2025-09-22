@@ -95,20 +95,32 @@ public class FinancialManager {
 
     // Calculate Geral Balance of All Transactions
     public static double getGeralBalance() {
-        double valorAllIncomes = 0;
-        double valorAllExpenses = 0;
+
+        double balance = 0;
 
         for (Transaction transaction : allTransactions) {
-            if (transaction.getClass() == Income.class) {
-                valorAllIncomes += transaction.getValor();
-            }
-
-            if (transaction.getClass() == Expense.class) {
-                valorAllExpenses += transaction.getValor();
-            }
+            balance+=transaction.getSignedAmount();
         }
 
-        return valorAllIncomes - valorAllExpenses;
+        return balance;
+    }
+
+    // Calculate Current Month Balance
+    public static double getMonthBalance() {
+
+        double balance = 0;
+
+        YearMonth currentMonth = YearMonth.now();
+
+        LocalDate firstDayOfMonth = currentMonth.atDay(1);
+        LocalDate lastDayOfMonth = currentMonth.atEndOfMonth();
+
+        for (Transaction transaction : allTransactions) {
+            if (!transaction.getDate().isBefore(firstDayOfMonth) && !transaction.getDate().isAfter(lastDayOfMonth)) {
+                balance+=transaction.getSignedAmount();
+            }
+        }
+        return balance;
     }
 
     // Calculate total expenses per category
@@ -144,30 +156,6 @@ public class FinancialManager {
     // Calculate the number of transactions
     public static Integer getNumberOfTransactions() {
         return allTransactions.size();
-    }
-
-    // Calculate Current Month Balance
-    public static double getMonthBalance() {
-        double valorMonthIncomes = 0;
-        double valorMonthExpenses = 0;
-
-        YearMonth currentMonth = YearMonth.now();
-
-        LocalDate firstDayOfMonth = currentMonth.atDay(1);
-        LocalDate lastDayOfMonth = currentMonth.atEndOfMonth();
-
-        for (Transaction transaction : allTransactions) {
-            if (!transaction.getDate().isBefore(firstDayOfMonth) && !transaction.getDate().isAfter(lastDayOfMonth)) {
-                if (transaction.getClass() == Income.class) {
-                    valorMonthIncomes += transaction.getValor();
-                }
-
-                if (transaction.getClass() == Expense.class) {
-                    valorMonthExpenses += transaction.getValor();
-                }
-            }
-        }
-        return valorMonthIncomes - valorMonthExpenses;
     }
 
     // Return a unmodifiable list whith monthly transactions

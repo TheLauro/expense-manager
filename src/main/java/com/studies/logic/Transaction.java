@@ -9,7 +9,7 @@ import java.time.format.DateTimeParseException;
  * @author lauro.ouverney
  */
 
-public class Transaction {
+public abstract class Transaction {
 
     protected String description;
     protected double valor;
@@ -64,4 +64,6 @@ public class Transaction {
     public LocalDate getDate() {
         return this.date;
     }
+
+    public abstract double getSignedAmount();
 }

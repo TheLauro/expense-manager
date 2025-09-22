@@ -29,4 +29,9 @@ public class Expense extends Transaction {
         return this.category;
     }
 
+    @Override
+    public double getSignedAmount(){
+        return -this.valor;
+    }
+
 }

@@ -3,6 +3,7 @@ package com.studies.logic;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Objects;
 
 /**
  *
@@ -66,4 +67,25 @@ public abstract class Transaction {
     }
 
     public abstract double getSignedAmount();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+
+        if (o == null || this.getClass() != o.getClass())
+            return false;
+
+        Transaction that = (Transaction) o;
+        return Double.compare(this.valor, that.valor) == 0 &&
+                Objects.equals(this.description, that.description) &&
+                Objects.equals(this.date, that.date);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(description, valor, date);
+    }
+
 }

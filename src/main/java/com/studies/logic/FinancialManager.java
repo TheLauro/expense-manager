@@ -174,4 +174,9 @@ public class FinancialManager {
 
         return Collections.unmodifiableList(monthlyTransactions);
     }
+
+    public static void clearAllTransactions(){
+        allTransactions.clear();
+    }
+
 }

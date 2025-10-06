@@ -15,65 +15,61 @@ import java.util.HashMap;
 
 public class FinancialManager {
 
-    private static final List<Transaction> allTransactions = new ArrayList<>();
-
-    private FinancialManager() {
-
-    }
+    private final List<Transaction> allTransactions = new ArrayList<>();
 
     // Expense Create Methods
-    public static Expense createExpense(String description, double valor, String date) {
+    public Expense createExpense(String description, double value, String date) {
 
-        Expense newExpense = new Expense(description, valor, date);
+        Expense newExpense = new Expense(description, value, date);
         allTransactions.add(newExpense);
 
         return newExpense;
     }
 
-    public static Expense createExpense(String description, double valor) {
+    public Expense createExpense(String description, double value) {
 
-        Expense newExpense = new Expense(description, valor);
+        Expense newExpense = new Expense(description, value);
         allTransactions.add(newExpense);
 
         return newExpense;
     }
 
     // Income Create Methods
-    public static Income createIncome(String description, double valor, String date) {
+    public Income createIncome(String description, double value, String date) {
 
-        Income newIncome = new Income(description, valor, date);
+        Income newIncome = new Income(description, value, date);
         allTransactions.add(newIncome);
 
         return newIncome;
     }
 
-    public static Income createIncome(String description, double valor) {
+    public Income createIncome(String description, double value) {
 
-        Income newIncome = new Income(description, valor);
+        Income newIncome = new Income(description, value);
         allTransactions.add(newIncome);
 
         return newIncome;
     }
 
     // Transactions Delete Method
-    public static void deleteTransaction(Transaction transaction) {
+    public void deleteTransaction(Transaction transaction) {
         allTransactions.remove(transaction);
     }
 
     // Begin of Update Methods for Transactions
     
     //Update description
-    public static void updateTransaction(Transaction transaction, String description){
+    public void updateTransaction(Transaction transaction, String description){
         transaction.setDescription(description);
     }
 
-    // Update valor
-    public static void updateTransaction(Transaction transaction, double valor) {
-        transaction.setValor(valor);
+    // Update value
+    public void updateTransaction(Transaction transaction, double value) {
+        transaction.setValue(value);
     }
 
     // Update date
-    public static void updateTransaction(Transaction transaction,LocalDate date) {
+    public void updateTransaction(Transaction transaction,LocalDate date) {
         try{
             String dateString = date.format(Transaction.BRAZILIAN_FORMAT);
             transaction.setDate(dateString);;
@@ -83,7 +79,7 @@ public class FinancialManager {
     }
 
     //Update Category
-    public static void updateCategory(Expense expense,String category){
+    public void updateCategory(Expense expense,String category){
         if(Category.exists(category)){
             expense.setCategory(category);
         } else {
@@ -94,7 +90,7 @@ public class FinancialManager {
     // End of Update Methods for Transaction
 
     // Calculate Geral Balance of All Transactions
-    public static double getGeralBalance() {
+    public double getGeralBalance() {
 
         double balance = 0;
 
@@ -106,7 +102,7 @@ public class FinancialManager {
     }
 
     // Calculate Current Month Balance
-    public static double getMonthBalance() {
+    public double getMonthBalance() {
 
         double balance = 0;
 
@@ -124,7 +120,7 @@ public class FinancialManager {
     }
 
     // Calculate total expenses per category
-    public static Map<String, Double> getExpensesByCategory() {
+    public Map<String, Double> getExpensesByCategory() {
         Map<String, Double> expensesByCategory = new HashMap<>();
 
         for (Transaction transaction : allTransactions) {
@@ -133,9 +129,9 @@ public class FinancialManager {
                 Expense expense = (Expense) transaction;
 
                 String category = expense.getCategory();
-                double valor = expense.getValor();
+                double value = expense.getValue();
 
-                expensesByCategory.merge(category, valor, Double::sum);
+                expensesByCategory.merge(category, value, Double::sum);
             }
         }
         
@@ -149,17 +145,17 @@ public class FinancialManager {
     }
 
     // Return a unmodifiable list whith all transactions
-    public static List<Transaction> getAllTransactions() {
+    public List<Transaction> getAllTransactions() {
         return Collections.unmodifiableList(allTransactions);
     }
 
     // Calculate the number of transactions
-    public static Integer getNumberOfTransactions() {
+    public Integer getNumberOfTransactions() {
         return allTransactions.size();
     }
 
     // Return a unmodifiable list whith monthly transactions
-    public static List<Transaction> getMonthlyTransactions(){
+    public List<Transaction> getMonthlyTransactions(){
         List<Transaction> monthlyTransactions = new ArrayList<>();
         YearMonth currentMonth = YearMonth.now();
 
@@ -175,7 +171,7 @@ public class FinancialManager {
         return Collections.unmodifiableList(monthlyTransactions);
     }
 
-    public static void clearAllTransactions(){
+    public void clearAllTransactions(){
         allTransactions.clear();
     }
 

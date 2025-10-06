@@ -7,17 +7,22 @@ package com.studies.logic;
 
 public class Income extends Transaction{
 
-    public Income(String description, double valor, String date) {
-        super(description, valor, date);
+    public Income(String description, double value, String date) {
+        super(description, value, date);
     }
 
-    public Income(String description, double valor) {
-        super(description, valor);
+    public Income(String description, double value) {
+        super(description, value);
     }
 
     @Override
     public double getSignedAmount(){
-        return this.valor;
+        return this.value;
+    }
+
+    @Override
+    public String getDetails(){
+        return "Tipo: Entrada";
     }
 
 }

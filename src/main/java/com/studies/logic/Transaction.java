@@ -13,27 +13,27 @@ import java.util.Objects;
 public abstract class Transaction {
 
     protected String description;
-    protected double valor;
+    protected double value;
     protected LocalDate date;
     public static final DateTimeFormatter BRAZILIAN_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    public Transaction(String description, double valor, String date) {
+    public Transaction(String description, double value, String date) {
         setDescription(description);
-        setValor(valor);
+        setValue(value);
         setDate(date);
     }
 
-    public Transaction(String description, double valor) {
-        this(description, valor, getTodayDate());
+    public Transaction(String description, double value) {
+        this(description, value, getTodayDate());
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public void setValor(double valor) {
-        if (valor > 0) {
-            this.valor = valor;
+    public void setValue(double value) {
+        if (value > 0) {
+            this.value = value;
         } else {
             throw new IllegalArgumentException("Valor Inválido! O valor não pode ser nulo ou menor que 0!");
         }
@@ -58,8 +58,8 @@ public abstract class Transaction {
         return this.description;
     }
 
-    public double getValor() {
-        return this.valor;
+    public double getValue() {
+        return this.value;
     }
 
     public LocalDate getDate() {
@@ -67,6 +67,8 @@ public abstract class Transaction {
     }
 
     public abstract double getSignedAmount();
+
+    public abstract String getDetails();
 
     @Override
     public boolean equals(Object o) {
@@ -77,7 +79,7 @@ public abstract class Transaction {
             return false;
 
         Transaction that = (Transaction) o;
-        return Double.compare(this.valor, that.valor) == 0 &&
+        return Double.compare(this.value, that.value) == 0 &&
                 Objects.equals(this.description, that.description) &&
                 Objects.equals(this.date, that.date);
 
@@ -85,7 +87,7 @@ public abstract class Transaction {
 
     @Override
     public int hashCode() {
-        return Objects.hash(description, valor, date);
+        return Objects.hash(description, value, date);
     }
 
 }

@@ -17,40 +17,41 @@ public class FinancialManagerTestWithData {
     Expense expenseOfMonth;
     Income incomeOfMonth;
     Expense expenseOfOtherMonth;
+    FinancialManager manager;
 
     @BeforeEach
-    public void initializeTransactionsExamples() {
-        // clear allTransactions List
-        FinancialManager.clearAllTransactions();
+    public void setUp() {
+        
+        this.manager = new FinancialManager();
 
         // initialize transactions examples for each test
-        expenseOfMonth = FinancialManager.createExpense("Casa", 500);
+        expenseOfMonth = manager.createExpense("Casa", 500);
         expenseOfMonth.setCategory("Aluguel");
 
-        incomeOfMonth = FinancialManager.createIncome("Salario", 1500);
+        incomeOfMonth = manager.createIncome("Salario", 1500);
 
-        expenseOfOtherMonth = FinancialManager.createExpense("Conserto do carro", 1000, "01/07/2025");
+        expenseOfOtherMonth = manager.createExpense("Conserto do carro", 1000, "01/07/2025");
         expenseOfOtherMonth.setCategory("Transporte");
 
-        FinancialManager.createIncome("Bico de motoboy", 200, "20/08/2025");
+        manager.createIncome("Bico de motoboy", 200, "20/08/2025");
 
-        Expense expense3 = FinancialManager.createExpense("Jantar fora", 20, "12/08/2025");
+        Expense expense3 = manager.createExpense("Jantar fora", 20, "12/08/2025");
         expense3.setCategory("Alimentacao");
 
-        FinancialManager.createIncome("Me deram de presente", 300, "30/06/2025");
+        manager.createIncome("Me deram de presente", 300, "30/06/2025");
     }
 
     @Test
     public void getGeralBalanceTest() {
         double expectedResult = 480;
-        double result = FinancialManager.getGeralBalance();
+        double result = manager.getGeralBalance();
         assertEquals(expectedResult, result, 0);
     }
 
     @Test
     public void getMonthBalanceTest() {
         double expectedResult = 1000;
-        double result = FinancialManager.getMonthBalance();
+        double result = manager.getMonthBalance();
 
         assertEquals(expectedResult, result, 0);
     }
@@ -61,9 +62,10 @@ public class FinancialManagerTestWithData {
                 "Alimentacao", 20.0,
                 "Aluguel", 500.0,
                 "Entretenimento", 0.0,
+                "Sem categoria",0.0,
                 "Transporte", 1000.0);
 
-        Map<String, Double> result = FinancialManager.getExpensesByCategory();
+        Map<String, Double> result = manager.getExpensesByCategory();
 
         assertEquals(expectedResult, result);
     }
@@ -71,7 +73,7 @@ public class FinancialManagerTestWithData {
     @Test
     public void getMonthlyTransactionsTest() {
 
-        List<Transaction> result = FinancialManager.getMonthlyTransactions();
+        List<Transaction> result = manager.getMonthlyTransactions();
 
         assertEquals(2, result.size());
 

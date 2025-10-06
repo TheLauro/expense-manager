@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 public class Category {
 
-    private static final Set<String> allCategories = new TreeSet<>(Arrays.asList("Alimentacao","Transporte","Entretenimento","Aluguel"));
+    private static final Set<String> allCategories = new TreeSet<>(Arrays.asList("Alimentacao","Transporte","Entretenimento","Aluguel","Sem categoria"));
 
     private Category() {
 
